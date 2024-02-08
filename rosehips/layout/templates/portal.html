@@ -7,8 +7,8 @@
         <!-- Navigation -->
         <nav role="navigation" class="navbar navbar-dark navbar-expand-md d-md-flex flex-md-column align-items-start h-100">
             <!-- Logo -->
-            <a class="navbar-brand" href="/">
-                <img src="{{ url_for('layout.static', filename='logo.png') }}" class="drg-logo">
+            <a class="navbar-brand mx-md-auto" href="/">
+                <img src="{{ url_for('layout.static', filename='logo_minimum.png') }}" class="drg-logo">
             </a>
             <!-- Toggle Icon -->
             <button type="button" class="navbar-toggler mt-1" data-toggle="collapse" data-target="#side-navigation"
@@ -19,7 +19,7 @@
             <div id="side-navigation" class="collapse navbar-collapse flex-column align-items-start w-100">
                 <ul class="navbar-nav flex-column my-1 mt-md-4">
                     {% for item in config["NAVIGATION"] %}
-                        <li class="nav-item text-white-50 text-capitalize">
+                        <li class="nav-item text-white-50 text-capitalize pl-md-2">
                             {{ item }}
                             <ul class="nav flex-column">
                                 {% for sub_item in config["NAVIGATION"][item] %}

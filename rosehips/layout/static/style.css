@@ -1,20 +1,52 @@
-/* Generic Elements */
-img.drg-logo{
-    filter:invert(80%);
+/* General Elements */
+.bg-dark{
+    background-color: #30464A!important;
+}
+.text-dark{
+    color: #30464a!important;;
+}
+.form-control{
+    border-color: #5B5B5B;
+    color:#30464A;
+}
+.form-control:focus{
+    border-color: #71A7AF;
+    color:#30464A;
+}
+/* Login Layout & Portal Layout */
+.login-form .btn-outline-success,
+#side-navigation .btn-outline-success{
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+}
+.login-form .btn-outline-success:hover,
+#side-navigation .btn-outline-success:hover{
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+    color: #30464A;
 }
 /* Login Layout */
 .login-form{
     max-width: 500px;
 }
 .login-form img.drg-logo{
-    width: 12rem;
+    width: 24rem;
 }
 /* Portal Layout */
+a.navbar-brand img{
+    width: 6rem;
+}
 @media (min-width: 768px) {
     .side-section{
-        flex-basis: 15rem;
+        flex-basis: 12rem;
     }
-}
-a.navbar-brand img{
-    width: 3rem;
+    .side-section .navbar{
+        width: 12rem;
+    }
+    .side-section a.navbar-brand{
+        margin-right:0px;
+    }
+    .side-section a.navbar-brand img{
+        width: 9.5rem;
+    }
 }
