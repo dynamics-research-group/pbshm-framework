@@ -3,7 +3,7 @@ import json
 
 from flask import Flask
 
-from pbshm import authentication, initialisation, mechanic, timekeeper, autostat, cleanse
+from pbshm import authentication, initialisation, mechanic, timekeeper, autostat, cleanse, ietools
 from pbshm.cleanse import commands as cleanse_commands
 from rosehips import layout
 
@@ -22,7 +22,8 @@ def create_app(test_config=None):
             },
             "toolbox":{
                 "Channel Statistics": "autostat.population_list",
-                "Cleanse Data": "cleanse.route_list"
+                "Cleanse Data": "cleanse.route_list",
+                "IE Debug": "ie-tools.list_models"
             }
         }
     )
@@ -43,9 +44,11 @@ def create_app(test_config=None):
     #Add Framework Blueprints
     app.register_blueprint(layout.bp, url_prefix="/layout") ## Layout
 
-    #Add Included Blueprints
+    #Add Included Route Blueprints
     app.register_blueprint(autostat.bp, url_prefix="/toolbox/autostat")
     app.register_blueprint(cleanse.bp, url_prefix="/toolbox/cleanse")
+    app.register_blueprint(ietools.bp, url_prefix="/toolbox/ie")
+    #Add Included Command Blueprints
     app.register_blueprint(cleanse_commands.bp)
     
     #Set Root Page
