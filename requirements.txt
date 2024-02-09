@@ -1,1 +1,2 @@
-pbshm-core>=1.1.1
+pbshm-core>=1.1.2
+pbshm-channel-toolbox>=0.1.2

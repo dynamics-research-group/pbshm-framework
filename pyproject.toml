@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pbshm-framework"
-version = "0.1"
+version = "0.2"
 authors = [
     { name = "Dan Brennan", email = "d.s.brennan@sheffield.ac.uk" }
 ]
@@ -16,9 +16,10 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Framework :: Flask"
 ]
-requires-python = ">=3.8.10"
+requires-python = ">=3.9.18"
 dependencies = [
-    "pbshm-core == 1.1.1"
+    "pbshm-core == 1.1.2",
+    "pbshm-channel-toolbox >= 0.1.2"
 ]
 
 [project.urls]
