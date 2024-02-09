@@ -3,10 +3,13 @@ The PBSHM Framework is a preconfigured version of the [PBSHM Core](https://githu
 
 For more information on the PBSHM Core, please see the [GitHub repository](https://github.com/dynamics-research-group/pbshm-flask-core). Each module included within the PBSHM Framework is linked [below](#included-modules), with details of the module authors and any further information on how to use the module. For more information on how to create a module for PBSHM Core, please see the [module template](https://github.com/dynamics-research-group/pbshm-module-template) repository.
 
-The minimum version of Python required to run the PBSHM Core is version 3.8.10.
+The minimum version of Python required to run the PBSHM Core is version 3.9.18.
 
 ## Included modules
 Below is a list of modules included within the framework and links to the corresponding repositories and guides.
+| Module | Description | Author | Repo | Documentation |
+| --- | --- | --- | --- | --- |
+| `pbshm-channel-toolbox` | A collection of tools to help processing channel data | [dsbrennan](https://github.com/dsbrennan) | [dsbrennan/channel-tools](https://github.com/dsbrennan/channel-tools) | [README](https://github.com/dsbrennan/channel-tools/blob/main/README.md) |
 
 ## Installation
 Install the package via pip:
