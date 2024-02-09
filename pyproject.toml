@@ -19,7 +19,8 @@ classifiers = [
 requires-python = ">=3.9.18"
 dependencies = [
     "pbshm-core == 1.1.2",
-    "pbshm-channel-toolbox >= 0.1.2"
+    "pbshm-channel-toolbox >= 0.1.2",
+    "pbshm-ie-toolbox >= 0.1.2"
 ]
 
 [project.urls]
