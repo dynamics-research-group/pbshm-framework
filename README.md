@@ -11,6 +11,7 @@ Below is a list of modules included within the framework and links to the corres
 | --- | --- | --- | --- | --- |
 | `pbshm-channel-toolbox` | A collection of tools to help processing channel data | [dsbrennan](https://github.com/dsbrennan) | [dsbrennan/channel-tools](https://github.com/dsbrennan/channel-tools) | [README](https://github.com/dsbrennan/channel-tools/blob/main/README.md) |
 | `pbshm-ie-toolbox` | A collection of tools to help processing IE models | [dsbrennan](https://github.com/dsbrennan) | [dsbrennan/ie-tools](https://github.com/dsbrennan/ie-tools) | [README](https://github.com/dsbrennan/ie-tools/blob/main/README.md) |
+| `pbshm-network-mcs` | An implementation of the Jaccard Index and Maximum Common Subgraph to generate network similarity scores for a a given set of IE models | [jgosliga](https://github.com/jgosliga) | [dynamics-research-group/ag-mcs](https://github.com/dynamics-research-group/ag-mcs) | [README](https://github.com/dynamics-research-group/ag-mcs/blob/main/README.md) |
 
 ## Installation
 Install the package via pip:
