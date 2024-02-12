@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pbshm-framework"
-version = "0.3.1"
+version = "0.4"
 authors = [
     { name = "Dan Brennan", email = "d.s.brennan@sheffield.ac.uk" }
 ]
