@@ -20,7 +20,8 @@ requires-python = ">=3.9.18"
 dependencies = [
     "pbshm-core == 1.1.2",
     "pbshm-channel-toolbox >= 0.1.2",
-    "pbshm-ie-toolbox >= 0.1.2"
+    "pbshm-ie-toolbox >= 0.1.2",
+    "pbshm-network-mcs >= 0.1"
 ]
 
 [project.urls]
