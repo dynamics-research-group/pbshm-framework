@@ -3,7 +3,7 @@ import json
 
 from flask import Flask
 
-from pbshm import authentication, initialisation, mechanic, timekeeper, autostat, cleanse, ietools, graphcomparison
+from pbshm import authentication, initialisation, mechanic, timekeeper, autostat, cleanse, ietools, graphcomparison, ievisualiser
 from pbshm.cleanse import commands as cleanse_commands
 from rosehips import layout
 
@@ -22,6 +22,9 @@ def create_app(test_config=None):
             },
             "network":{
                 "MCS Comparison": "graphcomparison.list"
+            },
+            "design":{
+                "IE Builder": "ie-visualiser.list_models"
             },
             "toolbox":{
                 "Channel Statistics": "autostat.population_list",
@@ -52,6 +55,7 @@ def create_app(test_config=None):
     app.register_blueprint(cleanse.bp, url_prefix="/toolbox/cleanse")
     app.register_blueprint(ietools.bp, url_prefix="/toolbox/ie")
     app.register_blueprint(graphcomparison.bp, url_prefix="/network/mcs")
+    app.register_blueprint(ievisualiser.bp, url_prefix="/design/ie")
 
     #Add Included Command Blueprints
     app.register_blueprint(cleanse_commands.bp)
