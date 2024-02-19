@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pbshm-framework"
-version = "0.4"
+version = "0.5"
 authors = [
     { name = "Dan Brennan", email = "d.s.brennan@sheffield.ac.uk" }
 ]
@@ -21,7 +21,8 @@ dependencies = [
     "pbshm-core == 1.1.2",
     "pbshm-channel-toolbox >= 0.1.2",
     "pbshm-ie-toolbox >= 0.1.2",
-    "pbshm-network-mcs >= 0.1"
+    "pbshm-network-mcs >= 0.1",
+    "pbshm-ie-visualiser >= 0.4"
 ]
 
 [project.urls]
