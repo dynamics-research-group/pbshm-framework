@@ -6,6 +6,7 @@ import json
 import site
 import sys
 import subprocess
+import typing
 
 from flask import Blueprint, request, current_app, render_template, jsonify
 from werkzeug.utils import secure_filename
@@ -63,6 +64,27 @@ def register_sideloaded_modules() -> None:
                     for display_value in module_config["navigation"][navigation_section]:
                         if display_value not in current_app.config["NAVIGATION"][navigation_section]:
                             current_app.config["NAVIGATION"][navigation_section][display_value] = f"sideloader.{module_config['navigation'][navigation_section][display_value]}"
+
+@bp.context_processor
+def utility_processor():
+    def url_for(
+        endpoint: str,
+        *,
+        _anchor: str = None,
+        _method: str = None,
+        _scheme: str = None,
+        _external: bool = None,
+        **values: typing.Any
+    ) -> str:
+        endpoint_suffix_index = endpoint.find('.')
+        if endpoint_suffix_index > 0:
+            endpoint_suffix = endpoint[:endpoint_suffix_index]
+            for child_blueprints, _ in bp._blueprints:
+                if child_blueprints.name == endpoint_suffix:
+                    endpoint = f"{bp.name}.{endpoint}"
+                    break
+        return current_app.url_for(endpoint, _anchor=_anchor, _method=_method, _scheme=_scheme, _external=_external, **values)
+    return dict(url_for=url_for)
 
 @bp.route("/", methods=("GET", "POST"))
 @authenticate_request("sideloader-list")
