@@ -42,6 +42,11 @@
     <div class="card-header">Error processing upload</div>
     <div class="card-body">{{ error }}</div>
 </div>
+{% else %}
+<div class="card bg-warning text-dark">
+    <div class="card-header font-weight-bold">Warning!</div>
+    <div class="card-body">Sideloading modules enables third party software to be installed into your system and gives them full access to data stored within your database. Installing a third party module may irrevocably damage your system and require a full reinstallation of the framework or system. Only upload a module, if you trust the author of the module and the python running the framework is inside a virtual environment.</div>
+</div>
 {% endif %}
 <div class="card bg-light my-2">
     <div class="card-header">PBSHM Module Configuration (JSON file)</div>
