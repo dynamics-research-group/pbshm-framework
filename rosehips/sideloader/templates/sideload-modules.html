@@ -1,0 +1,107 @@
+{% extends 'portal.html' %}
+{% block title %}Sideload PBSHM Modules{% endblock %}
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("a[data-command='button']").click(function(e){
+            e.preventDefault();
+            var button = $(this);
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200) {
+                    response = JSON.parse(this.responseText);
+                    if (response["status"] == "installed") {
+                        button.text("Installed").removeClass("btn-outline-info").addClass("btn-outline-warning");
+                    }
+                    else if (response["status"] == "uninstalled") {
+                        button.text("Uninstalled").removeClass("btn-outline-warning").addClass("btn-outline-info");
+                    }
+                    else {
+                        button.text("Unknown status").removeClass("btn-outline-info").removeClass("btn-outline-warning").addClass("btn-outline-danger");
+                    }
+                }else if (this.readyState == 1){
+                    button.text("Changes pending ...").addClass("disabled");
+                }else if (this.readyState == 4){
+                    button.text("Error").removeClass("btn-outline-info").removeClass("btn-outline-warning").addClass("btn-outline-danger");
+                }
+            };
+            httpRequest.open("POST", button.attr("href"), true);
+            httpRequest.send();
+        })
+    });
+</script>
+{% endblock %}
+{% block title_call_to_action %}
+<a href="{{ url_for('sideloader.static', filename='sideload.json') }}" target="_blank" class="btn btn-secondary">
+    Sideload template
+</a>
+{% endblock %}
+{% block content %}
+{% if error|length > 0 %}
+<div class="card bg-danger text-white">
+    <div class="card-header">Error processing upload</div>
+    <div class="card-body">{{ error }}</div>
+</div>
+{% else %}
+<div class="card bg-warning text-dark">
+    <div class="card-header font-weight-bold">Warning!</div>
+    <div class="card-body">Sideloading modules enables third party software to be installed into your system and gives them full access to data stored within your database. Installing a third party module may irrevocably damage your system and require a full reinstallation of the framework or system. Only upload a module, if you trust the author of the module and the python running the framework is inside a virtual environment.</div>
+</div>
+{% endif %}
+<div class="card bg-light my-2">
+    <div class="card-header">PBSHM Module Configuration (JSON file)</div>
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="input-group d-flex">
+                <div class="custom-file flex-grow-1">
+                    <input type="file" name="configuration" accept="application/json" class="custom-file-input">
+                    <label for="configuration" class="custom-file-label">Select File</label>
+                </div>
+                <div class="input-group-append">
+                    <input type="submit" name="upload" value="Upload Configuration" class="btn btn-secondary">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<table class="table table-borderless table-hover mt-2">
+    <thead class="bg-info text-white">
+        <tr>
+            <th scope="col">Package</th>
+            <th scope="col">Namespace</th>
+            <th scope="col">Path</th>
+            <th scope="col">URL Prefix</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for module in modules %}
+            <tr>
+                <td class="font-weight-bold py-3">{{ module["package"]["name"] if "name" in module["package"] else module["package"] }}</td>
+                <td class="py-3">{{ module["namespace"] }}</td>
+                <td class="py-3">
+                    {% for item in module["path"] %}
+                        {{ ' -> ' + item if loop.index > 1 else item}}
+                    {% endfor %}
+                </td>
+                <td class="py-3">{{ module["url_prefix"] }}</td>
+                <td class="align-middle text-center">
+                    {% if module['enabled'] %}
+                        <a href='{{ url_for("sideloader.uninstall_module", module_name=module["package"]["name"] if "name" in module["package"] else module["package"]) }}'
+                            data-command="button" 
+                            class="btn btn-outline-warning">
+                            Uninstall
+                        </a>
+                    {% else %}
+                        <a href='{{ url_for("sideloader.install_module", module_name=module["package"]["name"] if "name" in module["package"] else module["package"]) }}' 
+                            data-command="button"
+                            class="btn btn-outline-info">
+                            Install
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

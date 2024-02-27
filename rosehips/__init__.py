@@ -5,7 +5,7 @@ from flask import Flask
 
 from pbshm import authentication, initialisation, mechanic, timekeeper, autostat, cleanse, ietools, graphcomparison, ievisualiser
 from pbshm.cleanse import commands as cleanse_commands
-from rosehips import layout
+from rosehips import layout, sideloader
 
 def create_app(test_config=None):
     #Create Flask App
@@ -30,6 +30,9 @@ def create_app(test_config=None):
                 "Channel Statistics": "autostat.population_list",
                 "Cleanse Data": "cleanse.route_list",
                 "IE Debug": "ie-tools.list_models"
+            },
+            "system":{
+                "Sideload Module": "sideloader.list_modules"
             }
         }
     )
@@ -59,6 +62,11 @@ def create_app(test_config=None):
 
     #Add Included Command Blueprints
     app.register_blueprint(cleanse_commands.bp)
+
+    #Add Sideloader Blueprints
+    with app.app_context():
+        sideloader.register_sideloaded_modules()
+    app.register_blueprint(sideloader.bp, url_prefix="/sideloader") ## Sideloader
     
     #Set Root Page
     app.add_url_rule("/", endpoint="layout.home")

@@ -1,0 +1,20 @@
+{
+    "package": {
+        "name": "packagename",
+        "source": "git+https://github.com/dsbrennan/package-name",
+        "version": "0.1"
+    },
+    "namespace": "module.namespace",
+    "path": [
+        "module",
+        "namespace",
+        "__init__.py"
+    ],
+    "url_prefix": "/module",
+    "blueprint": true,
+    "navigation": {
+        "system": {
+            "Display name": "endpoint"
+        }
+    }
+}
