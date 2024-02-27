@@ -20,6 +20,12 @@ Install the package via pip:
 pip install pbshm-framework
 ```
 
+## Upgrade
+Upgrade the package to the latest version via pip:
+```
+pip install --upgrade pbshm-framework
+```
+
 ## Setup
 Set the Flask application path and environment.
 
