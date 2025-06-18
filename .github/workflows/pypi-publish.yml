@@ -4,7 +4,12 @@ on:
         branches:
             - main
 jobs:
+    test:
+        uses: ./github/workflows/test-dependencies.yml
     build:
+        needs:
+            - test
+        if: ${{ success() }}
         name: Build distribution files
         runs-on: ubuntu-latest
         steps:
