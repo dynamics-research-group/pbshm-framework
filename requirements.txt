@@ -1,5 +1,5 @@
-pbshm-core==1.1.5
-pbshm-channel-toolbox==0.1.2
-pbshm-ie-toolbox==0.1.2
-pbshm-network-mcs==0.1
-pbshm-ie-visualiser==0.4
+pbshm-core==1.1.6
+pbshm-channel-toolbox==0.1.4
+pbshm-ie-toolbox==0.1.4
+pbshm-network-mcs==0.1.1
+pbshm-ie-visualiser==1.0
