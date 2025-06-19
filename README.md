@@ -1,12 +1,12 @@
 # PBSHM Framework
-The PBSHM Framework is a preconfigured version of the [PBSHM Core](https://github.com/dynamics-research-group/pbshm-flask-core) and module ecosystem. The goal of the PBSHM Core was to build a base application which facilitated the curation of PBSHM Modules which in turn consume [PBSHM Schema](https://github.com/dynamics-research-group/pbshm-schema) data. The purpose of the PBSHM Framework is to provide a single packaged product of the [PBSHM Schema](https://github.com/dynamics-research-group/pbshm-schema), [PBSHM Core](https://github.com/dynamics-research-group/pbshm-flask-core), and any relevant PBSHM Modules: to showcase the available technology in an easy to use manner and enable anyone, regardless of their coding knowledge, to interact with the aforementioned technology.
+The PBSHM Framework is a preconfigured version of the [PBSHM Core](https://github.com/dynamics-research-group/pbshm-flask-core) and module ecosystem. The goal of the PBSHM Core was to build a base application which facilitated the curation of PBSHM Modules which in turn consume [PBSHM Schema](https://github.com/dynamics-research-group/pbshm-schema) data. The purpose of the PBSHM Framework is to provide a single packaged product of the [PBSHM Schema](https://github.com/dynamics-research-group/pbshm-schema), [PBSHM Core](https://github.com/dynamics-research-group/pbshm-flask-core), and any relevant PBSHM Modules: to showcase the available technology in an easy-to-use manner and enable anyone, regardless of their coding knowledge, to interact with the aforementioned technology.
 
 For more information on the PBSHM Core, please see the [GitHub repository](https://github.com/dynamics-research-group/pbshm-flask-core). Each module included within the PBSHM Framework is linked [below](#included-modules), with details of the module authors and any further information on how to use the module. For more information on how to create a module for PBSHM Core, please see the [module template](https://github.com/dynamics-research-group/pbshm-module-template) repository.
 
-The minimum version of Python required to run the PBSHM Framework is version 3.9.18. [Click here](#installation) for details on how to install the PBSHM Framework on your local machine.
+The minimum version of Python required to run the PBSHM Framework is version 3.11. [Click here](#installation) for details on how to install the PBSHM Framework on your local machine.
 
 ## Included modules
-Below is a list of modules included within the framework and links to the corresponding repositories and guides.
+Below are a list of modules included within the framework and links to the corresponding repositories and guides.
 | Module | Description | Author | Repo | Documentation |
 | --- | --- | --- | --- | --- |
 | `pbshm-channel-toolbox` | A collection of tools to help process channel data | [dsbrennan](https://github.com/dsbrennan) | [dsbrennan/channel-tools](https://github.com/dsbrennan/channel-tools) | [README](https://github.com/dsbrennan/channel-tools/blob/main/README.md) |
@@ -29,27 +29,6 @@ If you installed the PBSHM Framework via the `pbshm-framework` python package (a
 pip install --upgrade pbshm-framework
 ```
 
-## Configure Flask
-PBSHM Framework is built upon [Flask](https://github.com/pallets/flask) and as such, Flask must be configured to understand which application to load and whether debug information should be included. This information is passed onto Flask via the `FLASK_APP` and `FLASK_DEBUG` environment variables. The commands below will set these environment variables depending upon your operating system:
-
-Linux/Mac:
-```
-export FLASK_APP=rosehips
-export FLASK_DEBUG=1
-```
-
-Windows (CMD):
-```
-set FLASK_APP=rosehips
-set FLASK_DEBUG=1
-```
-
-Windows (Powershell):
-```
-$env:FLASK_APP="rosehips"
-$env:FLASK_DEBUG=1
-```
-
 ## Configure Framework
 There are two steps to configuring the PBSHM Framework: entering the details of the database configuration ([configure settings](#configure-settings)), and initialising the database ([initialise database](#initialise-database)). 
 
@@ -60,19 +39,19 @@ Once these aforementioned steps have been completed, you can now [start the fram
 ### Configure Settings
 To configure the system settings (database credentials, user collection, default collection, etc), simply use the following command and the system will prompt you to enter the required details (please ensure you have [configured flask](#configure-flask) before completing this step):
 ```
-flask init config
+flask --app rosehips init config
 ```
 
 ### Initialise Database
 To initialise the database with the latest version of the [PBSHM Schema](https://github.com/dynamics-research-group/pbshm-schema) and create a login for the system, simply use the following command and the system will prompt you for any required login details and install the latest version of the PBSHM Schema into the selected database (please ensure you have [configured the system settings](#configure-settings) before completing this step):
 ```
-flask init db new-root-user
+flask --app rosehips init db new-root-user
 ```
 
 ## Starting the Framework
-To start the framework using the inbuilt Flask development server, use the following command (please ensure you have [configured flask](#configure-flask) before running this command):
+Use the following command to start flask with the `rosehips` app:
 ```
-flask run
+flask --app rosehips run
 ```
 
 ## Bug reporting
