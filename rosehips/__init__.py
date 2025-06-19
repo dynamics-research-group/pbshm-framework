@@ -2,6 +2,7 @@ import os
 import json
 
 from flask import Flask
+from werkzeug.exceptions import Unauthorized
 
 from pbshm import (
     authentication,
@@ -77,6 +78,9 @@ def create_app(test_config=None):
 
     # Set Root Page
     app.add_url_rule("/", endpoint="layout.home")
+
+    # Register Error Handlers
+    app.register_error_handler(Unauthorized, authentication.handle_unauthorised_request)
 
     # Return App
     return app
