@@ -68,7 +68,7 @@ services:
     networks:
       - pbshm-framework-backend-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000')"]
       interval: 10s
       timeout: 5s
       retries: 3
