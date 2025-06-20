@@ -1,0 +1,35 @@
+# Python version, e.g. 3.11, 3.13
+ARG PYTHON_VERSION=3.13
+
+# Image variant, e.g. -slim, -slim-bullseye
+ARG PYTHON_IMAGE_VARIANT=-slim
+
+FROM python:${PYTHON_VERSION}${PYTHON_IMAGE_VARIANT}
+
+# PBSHM Framework Version
+ARG PBSHM_FRAMEWORK_VERSION=0.7.1
+
+# User setup - Define default UID/GID for non-root container user
+ARG USER=appuser
+ARG GROUP=appuser
+ARG UID=10001
+ARG GID=10001
+
+# Setup non-root user with configurable UID/GID
+RUN groupadd --gid ${GID} ${GROUP} && \
+    useradd --uid ${UID} --gid ${GROUP} --create-home --shell /bin/bash ${USER}
+
+# Switch to non-root user
+USER ${USER}
+
+# Need to add local bin to path as installing as user
+ENV PATH=$PATH:/home/$USER/.local/bin
+
+# Install pbshm-framework and dependencies from PyPI
+RUN pip install --no-cache-dir --user pbshm-framework==${PBSHM_FRAMEWORK_VERSION}
+
+# Copy startup script for both environments
+COPY --chown=${USER}:${GROUP} --chmod=755 ./entrypoint.sh /app/entrypoint.sh
+
+# Run the application
+ENTRYPOINT ["/bin/bash", "/app/entrypoint.sh"]
