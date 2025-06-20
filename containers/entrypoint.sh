@@ -3,6 +3,28 @@
 set -e # Exit on error
 set -u # Exit on unset variables
 
+# usage: file_env VAR [DEFAULT]
+#    ie: file_env 'XYZ_DB_PASSWORD' 'example'
+# (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
+#  "$XYZ_DB_PASSWORD" from a file, especially for Docker's secrets feature)
+file_env() {
+  local var="$1"
+  local fileVar="${var}_FILE"
+  local def="${2:-}"
+  if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
+    echo >&2 "error: both $var and $fileVar are set (but are exclusive)"
+    exit 1
+  fi
+  local val="$def"
+  if [ "${!var:-}" ]; then
+    val="${!var}"
+  elif [ "${!fileVar:-}" ]; then
+    val="$(<"${!fileVar}")"
+  fi
+  export "$var"="$val"
+  unset "$fileVar"
+}
+
 export FLASK_APP=rosehips \
   FLASK_DEBUG=1
 
@@ -15,6 +37,11 @@ if [ ! -f "$INIT_FLAG" ]; then
 
   # Initialize configuration
   echo "Initializing configuration..."
+
+  # Read in secrets from environment variables or files
+  file_env "MONGO_INITDB_ROOT_USERNAME"
+  file_env "MONGO_INITDB_ROOT_PASSWORD"
+  file_env "USER_PASSWORD"
 
   flask init config --hostname="$MONGO_HOSTNAME" \
     --port="$MONGO_PORT" \
