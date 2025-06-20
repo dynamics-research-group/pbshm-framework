@@ -1,0 +1,68 @@
+services:
+  pbshm-framework-db:
+    image: mongo:8.0.8
+    container_name: pbshm-framework-db
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=please_change_me
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - pbshm-framework-backend-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "--host",
+          "pbshm-framework-db",
+          "--port",
+          "27017",
+          "--eval",
+          '"db.runCommand(''ping'').ok"',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  pbshm-framework-frontend:
+    build:
+      context: .
+      dockerfile: ./Containerfile
+    container_name: pbshm-framework-frontend
+    restart: unless-stopped
+    ports:
+      - 5000:5000
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=please_change_me
+      - MONGO_HOSTNAME=pbshm-framework-db
+      - MONGO_PORT=27017
+      - MONGO_AUTH_DB=admin
+      - MONGO_DATA_DB=pbshm
+      - MONGO_USER_COLLECTION=users
+      - MONGO_DEFAULT_COLLECTION=structures
+      - USER_EMAIL=user@pbshm.ac.uk
+      - USER_PASSWORD=please_change_me
+      - USER_FIRST_NAME=Admin
+      - USER_SECOND_NAME=User
+    depends_on:
+      pbshm-framework-db:
+        condition: service_healthy
+    networks:
+      - pbshm-framework-backend-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+networks:
+  pbshm-framework-backend-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
