@@ -26,7 +26,7 @@ USER ${USER}
 ENV PATH=$PATH:/home/$USER/.local/bin
 
 # Install pbshm-framework and dependencies from PyPI
-RUN pip install --no-cache-dir --user pbshm-framework==${PBSHM_FRAMEWORK_VERSION}
+RUN pip install --no-cache-dir --user pbshm-framework==${PBSHM_FRAMEWORK_VERSION} gunicorn
 
 # Copy startup script for both environments
 COPY --chown=${USER}:${GROUP} --chmod=755 ./entrypoint.sh /app/entrypoint.sh
