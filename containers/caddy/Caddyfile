@@ -1,0 +1,5 @@
+# Caddyfile for PBSHM Framework
+
+:8080 {
+  reverse_proxy pbshm-framework-frontend:5000
+}

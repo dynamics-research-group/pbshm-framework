@@ -37,8 +37,6 @@ services:
       dockerfile: ./Containerfile
     container_name: pbshm-framework-frontend
     restart: unless-stopped
-    ports:
-      - 5000:5000
     environment:
       # Uncomment below if using secrets
       # - MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/pbshm_framework_mongo_initdb_root_username
@@ -77,6 +75,18 @@ services:
       retries: 3
       start_period: 20s
 
+  pbshm-framework-caddy:
+    image: caddy:2.10
+    container_name: pbshm-framework-caddy
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - $PWD/caddy/Caddyfile:/etc/caddy/Caddyfile:Z
+      - caddy_data:/data
+      - caddy_config:/config
+
+
 networks:
   pbshm-framework-backend-network:
     driver: bridge
@@ -92,3 +102,5 @@ networks:
 
 volumes:
   mongodb_data:
+  caddy_data:
+  caddy_config:
