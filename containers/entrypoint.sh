@@ -39,9 +39,26 @@ if [ ! -f "$INIT_FLAG" ]; then
   echo "Initializing configuration..."
 
   # Read in secrets from environment variables or files
-  file_env "MONGO_INITDB_ROOT_USERNAME"
-  file_env "MONGO_INITDB_ROOT_PASSWORD"
-  file_env "USER_PASSWORD"
+  # If these aren't provided then defaults/random values will be used
+  file_env "MONGO_INITDB_ROOT_USERNAME" "pbshm-admin"
+  file_env "MONGO_INITDB_ROOT_PASSWORD" "$(openssl rand -hex 32)"
+  file_env "USER_EMAIL" "user@pbshm.ac.uk"
+  file_env "USER_PASSWORD" "secure_password"
+
+  # Setup MongoDB root user
+  python <<EOF
+from pymongo import MongoClient
+client = MongoClient(
+    host='${MONGO_HOSTNAME:-localhost}',
+    port=${MONGO_PORT:-27017},
+)
+client.${MONGO_AUTH_DB:-admin}.command(
+    'createUser',
+    '$MONGO_INITDB_ROOT_USERNAME',
+    pwd='$MONGO_INITDB_ROOT_PASSWORD',
+    roles=[{'role': 'root', 'db': '${MONGO_AUTH_DB:-admin}'}]
+)
+EOF
 
   flask init config --hostname="$MONGO_HOSTNAME" \
     --port="$MONGO_PORT" \
@@ -61,6 +78,12 @@ if [ ! -f "$INIT_FLAG" ]; then
     --first-name="$USER_FIRST_NAME" \
     --second-name="$USER_SECOND_NAME"
   echo "Root user initialized successfully"
+
+  # Remove sensitive environment variables
+  unset MONGO_INITDB_ROOT_USERNAME \
+    MONGO_INITDB_ROOT_PASSWORD \
+    USER_EMAIL \
+    USER_PASSWORD
 
   # Mark initialisation as done
   touch "$INIT_FLAG"
