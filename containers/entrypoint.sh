@@ -95,21 +95,33 @@ fi
 
 echo "Initialization complete, starting Flask application..."
 
-# Set gunicorn defaults
-GUNICORN_WORKERS=${GUNICORN_WORKERS:-4}
-GUNICORN_PORT=${GUNICORN_PORT:-5000}
-GUNICORN_BIND=${GUNICORN_BIND:-0.0.0.0}
-GUNICORN_TIMEOUT=${GUNICORN_TIMEOUT:-30}
-GUNICORN_WORKER_CLASS=${GUNICORN_WORKER_CLASS:-sync}
-GUNICORN_MAX_REQUESTS=${GUNICORN_MAX_REQUESTS:-0}
-GUNICORN_MAX_REQUESTS_JITTER=${GUNICORN_MAX_REQUESTS_JITTER:-0}
+# Check if we want to run in debug mode
+if [ "${FLASK_DEBUG:-}" = "1" ]; then
+  echo "Running in debug mode"
 
-exec gunicorn -w "$GUNICORN_WORKERS" \
-  -b "$GUNICORN_BIND:$GUNICORN_PORT" \
-  --timeout "$GUNICORN_TIMEOUT" \
-  --worker-class "$GUNICORN_WORKER_CLASS" \
-  --max-requests "$GUNICORN_MAX_REQUESTS" \
-  --max-requests-jitter "$GUNICORN_MAX_REQUESTS_JITTER" \
-  --access-logfile - \
-  --error-logfile - \
-  'rosehips:create_app()'
+  exec flask run --host="${FRONTEND_BIND:-0.0.0.0}" \
+    --port="${FRONTEND_PORT:-5000}" \
+    --debug \
+    --reload
+else
+  echo "Running in production mode"
+
+  # Set gunicorn defaults
+  GUNICORN_PORT=${FRONTEND_PORT:-5000}
+  GUNICORN_BIND=${FRONTEND_BIND:-0.0.0.0}
+  GUNICORN_WORKERS=${GUNICORN_WORKERS:-4}
+  GUNICORN_TIMEOUT=${GUNICORN_TIMEOUT:-30}
+  GUNICORN_WORKER_CLASS=${GUNICORN_WORKER_CLASS:-sync}
+  GUNICORN_MAX_REQUESTS=${GUNICORN_MAX_REQUESTS:-0}
+  GUNICORN_MAX_REQUESTS_JITTER=${GUNICORN_MAX_REQUESTS_JITTER:-0}
+
+  exec gunicorn -w "$GUNICORN_WORKERS" \
+    -b "$GUNICORN_BIND:$GUNICORN_PORT" \
+    --timeout "$GUNICORN_TIMEOUT" \
+    --worker-class "$GUNICORN_WORKER_CLASS" \
+    --max-requests "$GUNICORN_MAX_REQUESTS" \
+    --max-requests-jitter "$GUNICORN_MAX_REQUESTS_JITTER" \
+    --access-logfile - \
+    --error-logfile - \
+    'rosehips:create_app()'
+fi
