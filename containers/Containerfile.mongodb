@@ -1,0 +1,32 @@
+# Stage 2: MongoDB Database
+FROM app-base as mf-stack
+
+# MongoDB version, e.g 8.0
+ARG MONGODB_VERSION={{ DATABASE_VERSION }}
+
+# Switch back to root to install system packages
+USER root
+
+# Install MongoDB and create directories in one layer
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    gnupg \
+    curl \
+    debian-keyring \
+    apt-transport-https && \
+    curl -fsSL https://www.mongodb.org/static/pgp/server-${MONGODB_VERSION}.asc | gpg -o /usr/share/keyrings/mongodb-server-${MONGODB_VERSION}.gpg --dearmor && \
+    echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-${MONGODB_VERSION}.gpg ] http://repo.mongodb.org/apt/debian bookworm/mongodb-org/${MONGODB_VERSION} main" | tee /etc/apt/sources.list.d/mongodb-org-${MONGODB_VERSION}.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends mongodb-org && \
+    mkdir -p /data/db /var/log/mongodb && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set permissions for non-root user
+RUN chown -R ${USER}:${GROUP} /data/db /var/log/mongodb
+
+# Copy entrypoint
+COPY --chown=${USER}:${GROUP} --chmod=755 ./entrypoint-mongodb.sh /home/${USER}/entrypoint-mongodb.sh
+
+# Run the application
+ENTRYPOINT ["/bin/bash", "/app/entrypoint-mongodb.sh"]
