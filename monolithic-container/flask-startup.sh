@@ -48,16 +48,20 @@ if [ ! -f "$INIT_FLAG" ]; then
   # Create MongoDB admin user
   echo -e "${YELLOW}Creating MongoDB admin user...${NC}"
 
-  MONGO_INITDB_ROOT_USERNAME=root
+  MONGO_INITDB_ROOT_USERNAME=pbshm-framework-admin
   MONGO_INITDB_ROOT_PASSWORD=$(openssl rand -hex 32)
 
-  mongosh --host localhost --port 27017 --eval "
-    db.getSiblingDB('admin').createUser({
+  mongosh --host localhost --port 27017 \
+    --eval "use admin" \
+    --eval "db.createUser({
       user: '$MONGO_INITDB_ROOT_USERNAME',
       pwd: '$MONGO_INITDB_ROOT_PASSWORD',
-      roles: [{ role: 'root', db: 'admin' }]
-    })
-  "
+      roles: [
+        { role: 'userAdminAnyDatabase', db: 'admin' },
+        { role: 'readWriteAnyDatabase', db: 'admin' }
+      ]
+    })" \
+    --eval "db.adminCommand( { shutdown: 1 } )"
 
   echo -e "${GREEN}MongoDB admin user created successfully\n!${NC}"
 
