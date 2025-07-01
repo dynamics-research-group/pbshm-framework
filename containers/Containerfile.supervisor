@@ -1,0 +1,17 @@
+FROM cmf-stack as scmf-stacl
+
+# Switch back to root to install system packages
+USER root
+
+# Install Supervisor
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    supervisor && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy supervisord file
+COPY --chown=${USER}:${GROUP} --chmod=644 ./supervisord.conf /etc/supervisord.conf
+
+# Run the application with supervisor (all processes run as appuser)
+ENTRYPOINT ["/usr/bin/supervisord"]
