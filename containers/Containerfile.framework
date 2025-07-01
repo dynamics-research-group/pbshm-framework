@@ -1,0 +1,46 @@
+# Python version, e.g. 3.11, 3.13
+ARG PYTHON_VERSION={{ IMAGE_VERSION }}
+
+# Image variant, e.g. -slim, -slim-bullseye
+ARG PYTHON_IMAGE_VARIANT={{ IMAGE_VARIANT }}
+
+# Stage 1: Base application with Python and PBSHM framework
+FROM python:${PYTHON_VERSION}${PYTHON_IMAGE_VARIANT} as app-base
+
+# PBSHM Framework Version
+ARG PBSHM_FRAMEWORK_VERSION={{ FRAMEWORK_VERSION }}
+
+# User setup - Define default UID/GID for non-root container user
+ARG USER=appuser
+ARG GROUP=appuser
+ARG UID=10001
+ARG GID=10001
+
+# Setup non-root user with configurable UID/GID
+RUN groupadd --gid ${GID} ${GROUP} && \
+    useradd --uid ${UID} --gid ${GROUP} --create-home --shell /bin/bash ${USER}
+
+# Switch to non-root user
+USER ${USER}
+
+# Need to add local bin to path as installing as user
+ENV PATH=$PATH:/home/$USER/.local/bin
+
+# Install pbshm-framework and dependencies from PyPI
+RUN pip install --no-cache-dir --user pbshm-framework==${PBSHM_FRAMEWORK_VERSION} {{ WSGI_PACKAGE }}
+
+# Switch to root
+USER root
+
+# Create app directory
+RUN mkdir -p /app/development
+
+# Set permissions for non-root user
+RUN chown -R ${USER}:${GROUP} /app
+
+# Copy app __init__.py file and entrypoint
+COPY --chown=${USER}:${GROUP} --chmod=640 ./__init__.py /app/development/__init__.py
+COPY --chown=${USER}:${GROUP} --chmod=755 ./entrypoint-framework.sh /home/${USER}/entrypoint-framework.sh
+
+# Run the application
+ENTRYPOINT ["/bin/bash", "/app/entrypoint-framework.sh"]
