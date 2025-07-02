@@ -17,8 +17,11 @@ ARG UID=10001
 ARG GID=10001
 
 # Setup non-root user with configurable UID/GID
+# and create app directory and set permissions for non-root user
 RUN groupadd --gid ${GID} ${GROUP} && \
-    useradd --uid ${UID} --gid ${GROUP} --create-home --shell /bin/bash ${USER}
+    useradd --uid ${UID} --gid ${GROUP} --create-home --shell /bin/bash ${USER} && \
+    mkdir -p /app/development && \
+    chown -R ${USER}:${GROUP} /app
 
 # Switch to non-root user
 USER ${USER}
@@ -28,15 +31,6 @@ ENV PATH=$PATH:/home/$USER/.local/bin
 
 # Install pbshm-framework and dependencies from PyPI
 RUN pip install --no-cache-dir --user pbshm-framework==${PBSHM_FRAMEWORK_VERSION} {{ WSGI_PACKAGE }}
-
-# Switch to root
-USER root
-
-# Create app directory
-RUN mkdir -p /app/development
-
-# Set permissions for non-root user
-RUN chown -R ${USER}:${GROUP} /app
 
 # Copy files
 COPY --chown=${USER}:${GROUP} --chmod=640 ./__init__.py /app/development/__init__.py
