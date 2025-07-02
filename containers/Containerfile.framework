@@ -44,4 +44,4 @@ COPY --chown=${USER}:${GROUP} --chmod=640 ./supervisor-framework.conf /etc/super
 COPY --chown=${USER}:${GROUP} --chmod=755 ./entrypoint-framework.sh /home/${USER}/entrypoint-framework.sh
 
 # Run the application
-ENTRYPOINT ["/bin/bash", "/app/entrypoint-framework.sh"]
+ENTRYPOINT ["/bin/bash", "/home/${USER}/entrypoint-framework.sh"]
