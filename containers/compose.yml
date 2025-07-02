@@ -5,11 +5,11 @@ services:
     restart: unless-stopped
     # Uncomment below if using secrets
     # environment:
-    #   - MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/pbshm_framework_mongo_initdb_root_username
-    #   - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/pbshm_framework_mongo_initdb_root_password
+    #   - MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/pbshm_framework_mongo_auth_username
+    #   - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/pbshm_framework_mongo_auth_password
     # secrets:
-    #   - pbshm_framework_mongo_initdb_root_username
-    #   - pbshm_framework_mongo_initdb_root_password
+    #   - pbshm_framework_mongo_auth_username
+    #   - pbshm_framework_mongo_auth_password
     volumes:
       - mongodb_data:/data/db
     networks:
@@ -39,8 +39,8 @@ services:
     restart: unless-stopped
     environment:
       # Uncomment below if using secrets
-      # - MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/pbshm_framework_mongo_initdb_root_username
-      # - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/pbshm_framework_mongo_initdb_root_password
+      # - MONGO_AUTH_USERNAME_FILE=/run/secrets/pbshm_framework_mongo_auth_username
+      # - MONGO_AUTH_PASSWORD_FILE=/run/secrets/pbshm_framework_mongo_auth_password
       # - USER_PASSWORD_FILE=/run/secrets/pbshm_framework_user_password
       - MONGO_HOSTNAME=pbshm-framework-db
       - MONGO_PORT=27017
@@ -60,8 +60,8 @@ services:
       - GUNICORN_MAX_REQUESTS_JITTER=0
     # Uncomment below if using secrets
     # secrets:
-    #   - pbshm_framework_mongo_initdb_root_username
-    #   - pbshm_framework_mongo_initdb_root_password
+    #   - pbshm_framework_mongo_auth_username
+    #   - pbshm_framework_mongo_auth_password
     #   - pbshm_framework_user_password
     depends_on:
       pbshm-framework-db:
@@ -93,9 +93,9 @@ networks:
 
 # Uncomment below if using secrets
 # secrets:
-#   pbshm_framework_mongo_initdb_root_username:
+#   pbshm_framework_mongo_auth_username:
 #     external: true
-#   pbshm_framework_mongo_initdb_root_password:
+#   pbshm_framework_mongo_auth_password:
 #     external: true
 #   pbshm_framework_user_password:
 #     external: true

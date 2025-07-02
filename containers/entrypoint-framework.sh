@@ -87,8 +87,8 @@ setup_framework(){
         # Read in secrets from environment variables or files
         # If these aren't provided then defaults/random values will be used
         print_pending_task_message "Generating secrets"
-        file_env "MONGO_INITDB_ROOT_USERNAME" "pbshm-admin-$(openssl rand -hex 8)"
-        file_env "MONGO_INITDB_ROOT_PASSWORD" "$(openssl rand -hex 32)"
+        file_env "MONGO_AUTH_USERNAME" "pbshm-admin-$(openssl rand -hex 8)"
+        file_env "MONGO_AUTH_PASSWORD" "$(openssl rand -hex 32)"
         file_env "USER_EMAIL" "framework-admin@pbshm.ac.uk"
         file_env "USER_PASSWORD" "secure_password"
         print_success_status "DONE"
@@ -99,8 +99,8 @@ setup_framework(){
             --hostname="${MONGO_HOSTNAME:-localhost}" \
             --port="${MONGO_PORT:-27017}" \
             --authentication-database="${MONGO_AUTH_DB:-admin}" \
-            --database-username="$MONGO_INITDB_ROOT_USERNAME" \
-            --database-password="$MONGO_INITDB_ROOT_PASSWORD" \
+            --database-username="$MONGO_AUTH_USERNAME" \
+            --database-password="$MONGO_AUTH_PASSWORD" \
             --pbshm-database="${MONGO_DATA_DB:-pbshm-framework}" \
             --user-collection="${MONGO_USER_COLLECTION:-users}" \
             --default-collection="${MONGO_DEFAULT_COLLECTION:-structures}" \
@@ -123,8 +123,8 @@ setup_framework(){
 
         # Remove sensitive environment variables and mark initialised
         print_pending_task_message "Removing secrets"
-        unset MONGO_INITDB_ROOT_USERNAME \
-            MONGO_INITDB_ROOT_PASSWORD \
+        unset MONGO_AUTH_USERNAME \
+            MONGO_AUTH_PASSWORD \
             USER_EMAIL \
             USER_PASSWORD
         touch "$INIT_FLAG"
@@ -161,6 +161,6 @@ setup_framework(){
 
 }
 
-if [ $(basename "$0") = "entrypoint-framework.sh" ]; then
+if [ "$(basename "$0")" = "entrypoint-framework.sh" ]; then
     setup_framework
 fi
