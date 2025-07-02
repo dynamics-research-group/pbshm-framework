@@ -10,8 +10,14 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy supervisord file
-COPY --chown=${USER}:${GROUP} --chmod=644 ./supervisord.conf /etc/supervisord.conf
+# Create supervisor sub config directory
+RUN mkdir -p /etc/supervisor/supervisor_config.d
+
+# Set permissions for non-root user
+RUN chown -R ${USER}:${GROUP} /etc/supervisor
+
+# Copy files
+COPY --chown=${USER}:${GROUP} --chmod=644 ./supervisord.conf /etc/supervisor/supervisord.conf
 
 # Run the application with supervisor (all processes run as appuser)
 ENTRYPOINT ["/usr/bin/supervisord"]
