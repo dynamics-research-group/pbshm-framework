@@ -25,8 +25,9 @@ RUN apt-get update && \
 # Set permissions for non-root user
 RUN chown -R ${USER}:${GROUP} /data/db /var/log/mongodb
 
-# Copy entrypoint
+# Copy files
 COPY --chown=${USER}:${GROUP} --chmod=755 ./entrypoint-mongodb.sh /home/${USER}/entrypoint-mongodb.sh
+COPY --chown=${USER}:${GROUP} --chmod=640 ./supervisor-mongodb.conf /etc/supervisor/supervisor_config.d/1-supervisor-mongodb.conf
 
 # Run the application
 ENTRYPOINT ["/bin/bash", "/app/entrypoint-mongodb.sh"]

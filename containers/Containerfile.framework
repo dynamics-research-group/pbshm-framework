@@ -38,8 +38,9 @@ RUN mkdir -p /app/development
 # Set permissions for non-root user
 RUN chown -R ${USER}:${GROUP} /app
 
-# Copy app __init__.py file and entrypoint
+# Copy files
 COPY --chown=${USER}:${GROUP} --chmod=640 ./__init__.py /app/development/__init__.py
+COPY --chown=${USER}:${GROUP} --chmod=640 ./supervisor-framework.conf /etc/supervisor/supervisor_config.d/2-supervisor-framework.conf
 COPY --chown=${USER}:${GROUP} --chmod=755 ./entrypoint-framework.sh /home/${USER}/entrypoint-framework.sh
 
 # Run the application

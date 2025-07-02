@@ -23,5 +23,6 @@ RUN apt-get update && \
 # Set permissions for non-root user
 RUN chown -R ${USER}:${GROUP} /etc/caddy
 
-# Copy caddy file
+# Copy files
 COPY --chown=${USER}:${GROUP} --chmod=644 ./Caddyfile /etc/caddy/Caddyfile
+COPY --chown=${USER}:${GROUP} --chmod=640 ./supervisor-caddy.conf /etc/supervisor/supervisor_config.d/3-supervisor-caddy.conf
