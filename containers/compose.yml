@@ -79,6 +79,8 @@ services:
     image: caddy:2.10
     container_name: pbshm-framework-caddy
     restart: unless-stopped
+    environment:
+      - PBSHM_FRAMEWORK_FRONTEND_HOST=pbshm-framework-frontend
     ports:
       - 8080:8080
     volumes:
