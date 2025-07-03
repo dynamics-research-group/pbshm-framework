@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Import framework file
-. ./entrypoint-framework.sh ""
+. $HOME/entrypoint-framework.sh ""
 
 setup_mongodb(){
     # Display banner
@@ -21,6 +21,13 @@ setup_mongodb(){
         file_env "MONGO_AUTH_PASSWORD" "$(openssl rand -hex 32)"
         print_success_status "DONE"
 
+        # Wait for MongoDB to start
+        while ! mongosh --host localhost --port 27017 --eval "db.adminCommand('ping')" >/dev/null 2>&1; do
+            print_pending_task_message "Waiting for MongoDB to start"
+            sleep 1
+        done
+        print_success_status "MongoDB started"
+
         # Create MongoDB User
         print_pending_task_message "Creating MongoDB user account"
         mongosh --host localhost --port 27017 \
@@ -32,8 +39,7 @@ setup_mongodb(){
                     { role: 'userAdminAnyDatabase', db: '${MONGO_AUTH_DB:-admin}' },
                     { role: 'readWriteAnyDatabase', db: '${MONGO_AUTH_DB:-admin}' }
                 ]
-                })" \
-            --eval "db.adminCommand( { shutdown: 1 } )"
+                })"
         print_success_status "DONE"
 
     fi
@@ -45,5 +51,6 @@ setup_mongodb(){
 }
 
 if [ $(basename "$0") = "entrypoint-mongodb.sh" ]; then
-    setup_framework
+  setup_mongodb
+  exit 0
 fi
