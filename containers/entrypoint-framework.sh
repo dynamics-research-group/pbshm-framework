@@ -83,6 +83,13 @@ setup_framework(){
     # Check if initialisation has been done already
     if [ ! -f "$INIT_FLAG" ]; then
         
+        # Source credentials from environment file if it exists
+        if [ -f "$HOME/.mongo.env" ]; then
+            print_pending_task_message "Reading credentials from environment file"
+            source "$HOME/.mongo.env"
+            print_success_status "DONE"
+        fi
+
         # Generate secrets
         # Read in secrets from environment variables or files
         # If these aren't provided then defaults/random values will be used

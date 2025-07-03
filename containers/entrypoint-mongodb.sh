@@ -44,13 +44,17 @@ setup_mongodb(){
 
     fi
 
-    # Setup framework
-    echo "\n"
-    setup_framework
+    # Write credentials to environment file with restricted permissions
+    cat > "$HOME/.mongo.env" << EOF
+export MONGO_AUTH_USERNAME="$MONGO_AUTH_USERNAME"
+export MONGO_AUTH_PASSWORD="$MONGO_AUTH_PASSWORD"
+EOF
+    chmod 600 "$HOME/.mongo.env"
 
+    print_pending_task_message "Starting framework service"
+    supervisorctl start framework && print_success_status "DONE"
 }
 
 if [ $(basename "$0") = "entrypoint-mongodb.sh" ]; then
   setup_mongodb
-  exit 0
 fi
