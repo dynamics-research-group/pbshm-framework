@@ -11,8 +11,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Create supervisor sub config and log directory and set permissions
-RUN mkdir -p /etc/supervisor/supervisor_config.d /var/log/supervisor && \
-    chown -R ${USER}:${GROUP} /etc/supervisor /var/log/supervisor
+RUN mkdir -p /etc/supervisor/supervisor_config.d /var/log/supervisor /run/supervisor && \
+    chown -R ${USER}:${GROUP} /etc/supervisor /var/log/supervisor /run/supervisor
 
 # Copy files
 COPY --chown=${USER}:${GROUP} --chmod=644 ./supervisord.conf /etc/supervisor/supervisord.conf

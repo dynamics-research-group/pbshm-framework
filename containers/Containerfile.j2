@@ -56,8 +56,8 @@ RUN curl -fsSL https://www.mongodb.org/static/pgp/server-${MONGODB_VERSION}.asc 
 {% if needs_supervisor %}
 # Install supervisord and create supervisor sub config directory and set permissions
 RUN apt-get install -y --no-install-recommends supervisor && \
-    mkdir -p /etc/supervisor/supervisor_config.d /var/log/supervisor && \
-    chown -R ${USER}:${GROUP} /etc/supervisor /var/log/supervisor
+    mkdir -p /etc/supervisor/supervisor_config.d /var/log/supervisor /run/supervisor && \
+    chown -R ${USER}:${GROUP} /etc/supervisor /var/log/supervisor /run/supervisor
 {% endif %}
 
 {% if needs_caddy %}
