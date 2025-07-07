@@ -85,26 +85,26 @@ ENV PATH=$PATH:/home/$USER/.local/bin
 RUN pip install --no-cache-dir --user pbshm-framework==${PBSHM_FRAMEWORK_VERSION} {{ wsgi_package }}
 
 # Copy files
-COPY --chown=${USER}:${GROUP} --chmod=640 ./__init__.py /app/development/__init__.py
-COPY --chown=${USER}:${GROUP} --chmod=755 ./entrypoint-framework.sh /home/${USER}/entrypoint-framework.sh
+COPY --chown=${USER}:${GROUP} --chmod=640 ./assets/__init__.py /app/development/__init__.py
+COPY --chown=${USER}:${GROUP} --chmod=755 ./assets/entrypoint-framework.sh /home/${USER}/entrypoint-framework.sh
 
 {% if needs_supervisor %}
 # Copy in supervisor configs
-COPY --chown=${USER}:${GROUP} --chmod=644 ./supervisord.conf /etc/supervisor/supervisord.conf
-COPY --chown=${USER}:${GROUP} --chmod=640 ./supervisor-framework.conf /etc/supervisor/supervisor_config.d/2-supervisor-framework.conf
+COPY --chown=${USER}:${GROUP} --chmod=644 ./assets/supervisord.conf /etc/supervisor/supervisord.conf
+COPY --chown=${USER}:${GROUP} --chmod=640 ./assets/supervisor-framework.conf /etc/supervisor/supervisor_config.d/2-supervisor-framework.conf
 {% endif %}
 
 {% if needs_mongodb %}
 # Copy MongoDB files
-COPY --chown=${USER}:${GROUP} --chmod=755 ./entrypoint-mongodb.sh /home/${USER}/entrypoint-mongodb.sh
-COPY --chown=${USER}:${GROUP} --chmod=640 ./supervisor-mongodb.conf /etc/supervisor/supervisor_config.d/1-supervisor-mongodb.conf
+COPY --chown=${USER}:${GROUP} --chmod=755 ./assets/entrypoint-mongodb.sh /home/${USER}/entrypoint-mongodb.sh
+COPY --chown=${USER}:${GROUP} --chmod=640 ./assets/supervisor-mongodb.conf /etc/supervisor/supervisor_config.d/1-supervisor-mongodb.conf
 {% endif %}
 
 {% if needs_caddy %}
 # Copy Caddy files
 ENV PBSHM_FRAMEWORK_FRONTEND_HOST=localhost
-COPY --chown=${USER}:${GROUP} --chmod=644 ./Caddyfile /etc/caddy/Caddyfile
-COPY --chown=${USER}:${GROUP} --chmod=640 ./supervisor-caddy.conf /etc/supervisor/supervisor_config.d/3-supervisor-caddy.conf
+COPY --chown=${USER}:${GROUP} --chmod=644 ./assets/Caddyfile /etc/caddy/Caddyfile
+COPY --chown=${USER}:${GROUP} --chmod=640 ./assets/supervisor-caddy.conf /etc/supervisor/supervisor_config.d/3-supervisor-caddy.conf
 {% endif %}
 
 {% if needs_supervisor %}

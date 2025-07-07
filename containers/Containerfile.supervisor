@@ -15,7 +15,7 @@ RUN mkdir -p /etc/supervisor/supervisor_config.d /var/log/supervisor /run/superv
     chown -R ${USER}:${GROUP} /etc/supervisor /var/log/supervisor /run/supervisor
 
 # Copy files
-COPY --chown=${USER}:${GROUP} --chmod=644 ./supervisord.conf /etc/supervisor/supervisord.conf
+COPY --chown=${USER}:${GROUP} --chmod=644 ./assets/supervisord.conf /etc/supervisor/supervisord.conf
 
 # Run the application with supervisor (all processes run as appuser)
 ENTRYPOINT ["/usr/bin/supervisord"]

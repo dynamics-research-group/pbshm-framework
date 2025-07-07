@@ -33,9 +33,9 @@ ENV PATH=$PATH:/home/$USER/.local/bin
 RUN pip install --no-cache-dir --user pbshm-framework==${PBSHM_FRAMEWORK_VERSION} {{ WSGI_PACKAGE }}
 
 # Copy files
-COPY --chown=${USER}:${GROUP} --chmod=640 ./__init__.py /app/development/__init__.py
-COPY --chown=${USER}:${GROUP} --chmod=640 ./supervisor-framework.conf /etc/supervisor/supervisor_config.d/2-supervisor-framework.conf
-COPY --chown=${USER}:${GROUP} --chmod=755 ./entrypoint-framework.sh /home/${USER}/entrypoint-framework.sh
+COPY --chown=${USER}:${GROUP} --chmod=640 ./assets/__init__.py /app/development/__init__.py
+COPY --chown=${USER}:${GROUP} --chmod=640 ./assets/supervisor-framework.conf /etc/supervisor/supervisor_config.d/2-supervisor-framework.conf
+COPY --chown=${USER}:${GROUP} --chmod=755 ./assets/entrypoint-framework.sh /home/${USER}/entrypoint-framework.sh
 
 # Run the application
 ENTRYPOINT ["/bin/bash", "/home/${USER}/entrypoint-framework.sh"]
