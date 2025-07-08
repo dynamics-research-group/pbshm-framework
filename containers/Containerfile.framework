@@ -1,14 +1,14 @@
 # Python version, e.g. 3.11, 3.13
-ARG PYTHON_VERSION={{ IMAGE_VERSION }}
+ARG PYTHON_VERSION={{ python_version }}
 
 # Image variant, e.g. -slim, -slim-bullseye
-ARG PYTHON_IMAGE_VARIANT={{ IMAGE_VARIANT }}
+ARG PYTHON_IMAGE_VARIANT={{ python_image }}
 
 # Stage 1: Base application with Python and PBSHM framework
 FROM python:${PYTHON_VERSION}${PYTHON_IMAGE_VARIANT} as app-base
 
 # PBSHM Framework Version
-ARG PBSHM_FRAMEWORK_VERSION={{ FRAMEWORK_VERSION }}
+ARG PBSHM_FRAMEWORK_VERSION={{ release_version }}
 
 # User setup - Define default UID/GID for non-root container user
 ARG USER=appuser
@@ -30,7 +30,7 @@ USER ${USER}
 ENV PATH=$PATH:/home/$USER/.local/bin
 
 # Install pbshm-framework and dependencies from PyPI
-RUN pip install --no-cache-dir --user pbshm-framework==${PBSHM_FRAMEWORK_VERSION} {{ WSGI_PACKAGE }}
+RUN pip install --no-cache-dir --user pbshm-framework==${PBSHM_FRAMEWORK_VERSION} {{ wsgi_package }}
 
 # Copy files
 COPY --chown=${USER}:${GROUP} --chmod=640 ./assets/__init__.py /app/development/__init__.py

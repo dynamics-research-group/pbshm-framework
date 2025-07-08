@@ -2,7 +2,7 @@
 FROM app-base as mf-stack
 
 # MongoDB version, e.g 8.0
-ARG MONGODB_VERSION={{ DATABASE_VERSION }}
+ARG MONGODB_VERSION={{ database_version }}
 
 # Switch back to root to install system packages
 USER root
