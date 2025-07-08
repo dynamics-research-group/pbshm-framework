@@ -101,7 +101,8 @@ def main():
                         "context": "./",
                         "containerfiles": f"./{version["name"]}/{variant["type"]}/{python}/{image}/{suffix_end_path}Containerfile",
                         "build_info": {
-                            "version": version["name"],
+                            "minor_version": version["name"],
+                            "release_version": version["framework_version"],
                             "type": variant["type"],
                             "python_version": python,
                             "python_image": image,
