@@ -1,100 +1,57 @@
 {
-  "0.7.1": {
-    "0.7.1-base-py3.12-bookworm": {
-      "framework_version": "0.7.1",
-      "framework_image_variant": "base",
-      "python_version": "3.12",
-      "debian_version": "bookworm",
-      "wsgi_package": "gunicorn",
-      "database_version": "8.0"
-    },
-    "0.7.1-base-py3.12-trixie": {
-      "framework_version": "0.7.1",
-      "framework_image_variant": "base",
-      "python_version": "3.12",
-      "debian_version": "trixie",
-      "wsgi_package": "gunicorn",
-      "database_version": "8.0"
-    },
-    "0.7.1-base-py3.13-bookworm": {
-      "framework_version": "0.7.1",
-      "framework_image_variant": "base",
-      "python_version": "3.13",
-      "debian_version": "bookworm",
-      "wsgi_package": "gunicorn",
-      "database_version": "8.0"
-    },
-    "0.7.1-base-py3.13-trixie": {
-      "framework_version": "0.7.1",
-      "framework_image_variant": "base",
-      "python_version": "3.13",
-      "debian_version": "trixie",
-      "wsgi_package": "gunicorn",
-      "database_version": "8.0"
-    },
-    "0.7.1-dev-py3.12-bookworm": {
-      "framework_version": "0.7.1",
-      "framework_image_variant": "dev",
-      "python_version": "3.12",
-      "debian_version": "bookworm",
-      "wsgi_package": "gunicorn",
-      "database_version": "8.0"
-    },
-    "0.7.1-dev-py3.12-trixie": {
-      "framework_version": "0.7.1",
-      "framework_image_variant": "dev",
-      "python_version": "3.12",
-      "debian_version": "trixie",
-      "wsgi_package": "gunicorn",
-      "database_version": "8.0"
-    },
-    "0.7.1-dev-py3.13-bookworm": {
-      "framework_version": "0.7.1",
-      "framework_image_variant": "dev",
-      "python_version": "3.13",
-      "debian_version": "bookworm",
-      "wsgi_package": "gunicorn",
-      "database_version": "8.0"
-    },
-    "0.7.1-dev-py3.13-trixie": {
-      "framework_version": "0.7.1",
-      "framework_image_variant": "dev",
-      "python_version": "3.13",
-      "debian_version": "trixie",
-      "wsgi_package": "gunicorn",
-      "database_version": "8.0"
-    },
-    "0.7.1-standalone-py3.12-bookworm": {
-      "framework_version": "0.7.1",
-      "framework_image_variant": "standalone",
-      "python_version": "3.12",
-      "debian_version": "bookworm",
-      "wsgi_package": "gunicorn",
-      "database_version": "8.0"
-    },
-    "0.7.1-standalone-py3.12-trixie": {
-      "framework_version": "0.7.1",
-      "framework_image_variant": "standalone",
-      "python_version": "3.12",
-      "debian_version": "trixie",
-      "wsgi_package": "gunicorn",
-      "database_version": "8.0"
-    },
-    "0.7.1-standalone-py3.13-bookworm": {
-      "framework_version": "0.7.1",
-      "framework_image_variant": "standalone",
-      "python_version": "3.13",
-      "debian_version": "bookworm",
-      "wsgi_package": "gunicorn",
-      "database_version": "8.0"
-    },
-    "0.7.1-standalone-py3.13-trixie": {
-      "framework_version": "0.7.1",
-      "framework_image_variant": "standalone",
-      "python_version": "3.13",
-      "debian_version": "trixie",
-      "wsgi_package": "gunicorn",
-      "database_version": "8.0"
-    }
-  }
+    "versions": [
+        {
+            "name": "0.7",
+            "framework_version": "0.7.1",
+            "shared": {
+                "python_version": "3.13",
+                "python_image": "slim-bookworm",
+                "dev": {
+                    "database_version": "8.0"
+                },
+                "standalone": {
+                    "database_version": "8.0",
+                    "wsgi_package": "gunicorn",
+                    "reverse_proxy": "caddy"
+                }
+            },
+            "variants": [
+                {
+                    "type": "base",
+                    "python_version": [
+                        "3.11",
+                        "3.12",
+                        "3.13"
+                    ],
+                    "python_image": [
+                        "slim-bookworm"
+                    ]
+                },
+                {
+                    "type": "dev",
+                    "python_version": [
+                        "3.11",
+                        "3.12",
+                        "3.13"
+                    ],
+                    "python_image": [
+                        "slim-bookworm"
+                    ],
+                    "database_version": "8.0"
+                },
+                {
+                    "type": "standalone",
+                    "python_version": [
+                        "3.13"
+                    ],
+                    "python_image": [
+                        "slim-bookworm"
+                    ],
+                    "database_version": "8.0",
+                    "wsgi_package": "gunicorn",
+                    "reverse_proxy": "caddy"
+                }
+            ]
+        }
+    ]
 }
