@@ -117,8 +117,8 @@ def main():
                     includes.append(build)
 
     # output includes json
-    sys.stdout.write(json.dumps({"include": includes}))
+    return {"include": includes}
 
 
 if __name__ == "__main__":
-    main()
+    sys.stdout.write(json.dumps(main()))
