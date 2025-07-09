@@ -3,8 +3,7 @@
 {% include "Containerfile.framework" %}
 
 {% if type == "dev" or type == "standalone" %}
-    {% include "Containerfile.mongodb" %}
-{% endif %}
+{% include "Containerfile.mongodb" %}
 
 # Switch back to root to install system packages
 USER root
@@ -49,7 +48,9 @@ RUN mkdir -p /etc/supervisor/supervisor_config.d /var/log/supervisor /run/superv
     chown -R ${USER}:${GROUP} /etc/supervisor /var/log/supervisor /run/supervisor
 
 # Copy files
+COPY --chown=${USER}:${GROUP} --chmod=640 ./assets/supervisor-framework.conf /etc/supervisor/supervisor_config.d/2-supervisor-framework.conf
 COPY --chown=${USER}:${GROUP} --chmod=644 ./assets/supervisord.conf /etc/supervisor/supervisord.conf
 
 # Run the application with supervisor (all processes run as appuser)
 ENTRYPOINT ["/usr/bin/supervisord"]
+{% endif %}
