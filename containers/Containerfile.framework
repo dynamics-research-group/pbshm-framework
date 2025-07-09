@@ -5,7 +5,7 @@ ARG PYTHON_VERSION={{ python_version }}
 ARG PYTHON_IMAGE_VARIANT={{ python_image }}
 
 # Stage 1: Base application with Python and PBSHM framework
-FROM python:${PYTHON_VERSION}${PYTHON_IMAGE_VARIANT} as app-base
+FROM python:${PYTHON_VERSION}-${PYTHON_IMAGE_VARIANT} as app-base
 
 # PBSHM Framework Version
 ARG PBSHM_FRAMEWORK_VERSION={{ release_version }}
